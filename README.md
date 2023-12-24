@@ -7,3 +7,6 @@ docker
 
 Angular:
 npm install -g @angular/cli
+
+git:
+git remote set-url origin https://username:your-token@github.com/username/repository.git
