@@ -1,3 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral()
+	    google()
+    }
+
+    dependencies {
+        classpath 'com.puppycrawl.tools:checkstyle:10.10.0'
+    }
+}
+
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'checkstyle'
+    
+    checkstyle {
+        configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+        toolVersion = "10.10.0"
+    }
+    task checkstyle(type: Checkstyle) {
+        dependsOn 'check'
+        source 'src'
+        include '**/*.java'
+        // Additional Checkstyle configuration can be added here
+    }
 }
