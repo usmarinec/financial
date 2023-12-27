@@ -15,6 +15,8 @@ Gradle
 3. vi ~/.bashrc 
 4. export GRADLE_HOME=/opt/gradle
 5. export PATH=$PATH:$GRADLE_HOME/bin
+6. save .bashrc
+7. source ~/.bashrc (or .bash_profile)
 
 Angular:
 npm install -g @angular/cli
