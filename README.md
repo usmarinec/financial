@@ -4,8 +4,17 @@ cloud9 setup:
 docker
 1. sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 2. sudo chmod +x /usr/local/bin/docker-compose
-3. sudo iptables -L
-4. sudo iptables -A INPUT -p tcp --dport YOUR_PORT_NUMBER -j ACCEPT
+
+instance iptables
+1. sudo iptables -L
+2. sudo iptables -A INPUT -p tcp --dport YOUR_PORT_NUMBER -j ACCEPT
+
+Gradle
+1. wget https://services.gradle.org/distributions/gradle-<version>-bin.zip
+2. unzip gradle-<version>-bin.zip -d /opt/gradle
+3. vi ~/.bashrc 
+4. export GRADLE_HOME=/opt/gradle
+5. export PATH=$PATH:$GRADLE_HOME/bin
 
 Angular:
 npm install -g @angular/cli
