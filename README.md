@@ -30,6 +30,10 @@ git remote set-url origin https://username:your-token@github.com/username/financ
 * Springboot:3.2.1
 * MongoDb:4.2.12
 * Gradle:8.5
+* 
+## Repositories
+* mavenCentral
+* google
 
 ## Dependencies
 
