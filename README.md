@@ -26,10 +26,10 @@ npm install -g @angular/cli
 git remote set-url origin https://username:your-token@github.com/username/financial.git
 
 ## Stack
-*Angular:17.0.0
-*Springboot:3.2.1
-*MongoDb:4.2.12
-*Gradle:8.5
+* Angular:17.0.0
+* Springboot:3.2.1
+* MongoDb:4.2.12
+* Gradle:8.5
 
 ## Dependencies
 
