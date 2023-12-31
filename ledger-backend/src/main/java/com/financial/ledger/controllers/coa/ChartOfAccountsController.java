@@ -1,4 +1,4 @@
-package com.financial.ledger.controllers;
+package com.financial.ledger.controllers.coa;
 
 import com.financial.ledger.domain.coa.ChartOfAccounts;
 import com.financial.ledger.service.coa.ChartOfAccountsService;

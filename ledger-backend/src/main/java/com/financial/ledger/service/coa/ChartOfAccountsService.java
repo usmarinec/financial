@@ -3,7 +3,7 @@ package com.financial.ledger.service.coa;
 import com.financial.ledger.domain.account.Account;
 import com.financial.ledger.domain.coa.ChartOfAccounts;
 import com.financial.ledger.domain.entity.Entity;
-import com.financial.ledger.repositories.ChartOfAccountsRepository;
+import com.financial.ledger.repositories.coa.ChartOfAccountsRepository;
 import com.financial.ledger.service.account.AccountService;
 import com.financial.ledger.service.entity.EntityService;
 import java.util.List;

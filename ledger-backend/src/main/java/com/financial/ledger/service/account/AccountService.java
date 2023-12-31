@@ -1,7 +1,8 @@
 package com.financial.ledger.service.account;
 
 import com.financial.ledger.domain.account.Account;
-import com.financial.ledger.repositories.AccountRepository;
+import com.financial.ledger.repositories.account.AccountRepository;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

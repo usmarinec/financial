@@ -1,4 +1,4 @@
-package com.financial.ledger.controllers;
+package com.financial.ledger.controllers.entity;
 
 import com.financial.ledger.domain.entity.Entity;
 import com.financial.ledger.service.entity.EntityService;

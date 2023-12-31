@@ -1,4 +1,4 @@
-package com.financial.ledger.controllers;
+package com.financial.ledger.controllers.account;
 
 import com.financial.ledger.domain.account.Account;
 import com.financial.ledger.service.account.AccountService;
