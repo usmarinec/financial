@@ -3,7 +3,10 @@ package com.financial.ledger.controllers.je;
 import com.financial.ledger.domain.je.AdjustingJournalEntry;
 import com.financial.ledger.service.je.AdjustingJournalEntryService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,18 +20,22 @@ public class AdjustingJournalEntryController {
   @Autowired AdjustingJournalEntryService ajeService;
 
   @PostMapping("/create")
-  public AdjustingJournalEntry createAje(@RequestBody AdjustingJournalEntry aje) {
-    return ajeService.saveAje(aje);
+  public ResponseEntity<AdjustingJournalEntry> createAje(@RequestBody AdjustingJournalEntry aje) {
+    AdjustingJournalEntry savedAje = ajeService.saveAje(aje);
+    return new ResponseEntity<>(savedAje, HttpStatus.CREATED);
   }
 
   @PostMapping("/create-list")
-  public List<AdjustingJournalEntry> createAjes(@RequestBody List<AdjustingJournalEntry> ajes) {
-    return ajeService.saveAjes(ajes);
+  public ResponseEntity<List<AdjustingJournalEntry>> createAjes(
+      @RequestBody List<AdjustingJournalEntry> ajes) {
+    List<AdjustingJournalEntry> savedAjes = ajeService.saveAjes(ajes);
+    return new ResponseEntity<>(savedAjes, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
-  public List<AdjustingJournalEntry> getAllJes() {
-    return ajeService.getAllAjes();
+  public ResponseEntity<List<AdjustingJournalEntry>> getAllJes() {
+    List<AdjustingJournalEntry> ajes = ajeService.getAllAjes();
+    return new ResponseEntity<>(ajes, HttpStatus.OK);
   }
 
   /**
@@ -38,9 +45,11 @@ public class AdjustingJournalEntryController {
    * @return Adjusting Journal Entry
    */
   @GetMapping("/fetch/{id}")
-  public AdjustingJournalEntry getAjeById(@PathVariable String id) {
-    return ajeService
-        .getAjeById(id)
-        .orElseThrow(() -> new RuntimeException("AJE not found with id: " + id));
+  public ResponseEntity<AdjustingJournalEntry> getAjeById(@PathVariable String id) {
+    Optional<AdjustingJournalEntry> optionalAje = ajeService.getAjeById(id);
+
+    return optionalAje
+        .map(aje -> new ResponseEntity<>(aje, HttpStatus.OK))
+        .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 }

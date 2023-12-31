@@ -3,7 +3,10 @@ package com.financial.ledger.controllers.je;
 import com.financial.ledger.domain.je.JournalEntry;
 import com.financial.ledger.service.je.JournalEntryService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,18 +20,21 @@ public class JournalEntryController {
   @Autowired JournalEntryService jeService;
 
   @PostMapping("/create")
-  public JournalEntry createJe(@RequestBody JournalEntry je) {
-    return jeService.saveJe(je);
+  public ResponseEntity<JournalEntry> createJe(@RequestBody JournalEntry je) {
+    JournalEntry savedJe = jeService.saveJe(je);
+    return new ResponseEntity<>(savedJe, HttpStatus.CREATED);
   }
 
   @PostMapping("/create-list")
-  public List<JournalEntry> createJes(@RequestBody List<JournalEntry> jes) {
-    return jeService.saveJes(jes);
+  public ResponseEntity<List<JournalEntry>> createJes(@RequestBody List<JournalEntry> jes) {
+    List<JournalEntry> savedJes = jeService.saveJes(jes);
+    return new ResponseEntity<>(savedJes, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
-  public List<JournalEntry> getAllEntries() {
-    return jeService.getAllJes();
+  public ResponseEntity<List<JournalEntry>> getAllEntries() {
+    List<JournalEntry> jes = jeService.getAllJes();
+    return new ResponseEntity<>(jes, HttpStatus.OK);
   }
 
   /**
@@ -38,9 +44,11 @@ public class JournalEntryController {
    * @return Journal Entry
    */
   @GetMapping("/fetch/{id}")
-  public JournalEntry getJeById(@PathVariable String id) {
-    return jeService
-        .getJeById(id)
-        .orElseThrow(() -> new RuntimeException("JE not found with id: " + id));
+  public ResponseEntity<JournalEntry> getJeById(@PathVariable String id) {
+    Optional<JournalEntry> optionalJe = jeService.getJeById(id);
+
+    return optionalJe
+        .map(je -> new ResponseEntity<>(je, HttpStatus.OK))
+        .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 }
