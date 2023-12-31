@@ -1,4 +1,4 @@
-package com.financial.ledger.repositories;
+package com.financial.ledger.repositories.coa;
 
 import com.financial.ledger.domain.coa.ChartOfAccounts;
 import org.springframework.data.mongodb.repository.MongoRepository;

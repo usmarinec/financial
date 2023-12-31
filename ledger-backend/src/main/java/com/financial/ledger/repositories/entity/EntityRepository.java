@@ -1,4 +1,4 @@
-package com.financial.ledger.repositories;
+package com.financial.ledger.repositories.entity;
 
 import com.financial.ledger.domain.entity.Entity;
 import java.util.Optional;
