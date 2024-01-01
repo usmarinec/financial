@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService extends LedgerService<Account, AccountRepository> {
-  private AccountRepository accountRepository = this.getRepository();
 
   @Override
   public Account save(Account account) {
     account.setAccountNumber(this.createAccountNum(account));
-    return accountRepository.save(account);
+    return repository.save(account);
   }
 
   /**
@@ -28,7 +27,7 @@ public class AccountService extends LedgerService<Account, AccountRepository> {
         account -> {
           account.setAccountNumber(this.createAccountNum(account));
         });
-    return accountRepository.saveAll(accounts);
+    return repository.saveAll(accounts);
   }
 
   private int createAccountNum(Account account) {

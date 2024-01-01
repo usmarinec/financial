@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChartOfAccountsService
     extends LedgerService<ChartOfAccounts, ChartOfAccountsRepository> {
-  private ChartOfAccountsRepository coaRepository = this.getRepository();
   @Autowired private AccountService accountService;
   @Autowired private EntityService entityService;
 
@@ -28,12 +27,12 @@ public class ChartOfAccountsService
   public ChartOfAccounts save(ChartOfAccounts coa) {
     coa.setAccounts(this.createAccounts(coa));
     coa.setEntity(this.createEntity(coa));
-    return coaRepository.save(coa);
+    return repository.save(coa);
   }
 
   @Override
   public List<ChartOfAccounts> getAll() {
-    return coaRepository.findAll();
+    return repository.findAll();
   }
 
   private List<Account> createAccounts(ChartOfAccounts coa) {
