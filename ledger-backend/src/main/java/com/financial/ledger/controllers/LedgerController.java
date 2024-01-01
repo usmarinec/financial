@@ -1,5 +1,6 @@
 package com.financial.ledger.controllers;
 
+import com.financial.ledger.exception.NotFoundException;
 import com.financial.ledger.service.LedgerService;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public abstract class LedgerController<T, S extends LedgerService<T, ?>> {
 
     return optionalType
         .map(type -> new ResponseEntity<>(type, HttpStatus.OK))
-        .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        .orElseThrow(() -> new NotFoundException("Resource with id: '" + id + "' not found"));
   }
 
   protected S getService() {
