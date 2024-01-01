@@ -21,19 +21,19 @@ public class JournalEntryController {
 
   @PostMapping("/create")
   public ResponseEntity<JournalEntry> createJe(@RequestBody JournalEntry je) {
-    JournalEntry savedJe = jeService.saveJe(je);
+    JournalEntry savedJe = jeService.save(je);
     return new ResponseEntity<>(savedJe, HttpStatus.CREATED);
   }
 
   @PostMapping("/create-list")
   public ResponseEntity<List<JournalEntry>> createJes(@RequestBody List<JournalEntry> jes) {
-    List<JournalEntry> savedJes = jeService.saveJes(jes);
+    List<JournalEntry> savedJes = jeService.saveAll(jes);
     return new ResponseEntity<>(savedJes, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
   public ResponseEntity<List<JournalEntry>> getAllEntries() {
-    List<JournalEntry> jes = jeService.getAllJes();
+    List<JournalEntry> jes = jeService.getAll();
     return new ResponseEntity<>(jes, HttpStatus.OK);
   }
 
@@ -45,7 +45,7 @@ public class JournalEntryController {
    */
   @GetMapping("/fetch/{id}")
   public ResponseEntity<JournalEntry> getJeById(@PathVariable String id) {
-    Optional<JournalEntry> optionalJe = jeService.getJeById(id);
+    Optional<JournalEntry> optionalJe = jeService.getById(id);
 
     return optionalJe
         .map(je -> new ResponseEntity<>(je, HttpStatus.OK))

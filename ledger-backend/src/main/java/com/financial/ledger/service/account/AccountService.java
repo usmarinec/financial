@@ -2,15 +2,16 @@ package com.financial.ledger.service.account;
 
 import com.financial.ledger.domain.account.Account;
 import com.financial.ledger.repositories.account.AccountRepository;
+import com.financial.ledger.service.LedgerService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountService {
-  @Autowired private AccountRepository accountRepository;
+public class AccountService extends LedgerService<Account, AccountRepository> {
+  private AccountRepository accountRepository = this.getRepository();
 
-  public Account saveAccount(Account account) {
+  @Override
+  public Account save(Account account) {
     account.setAccountNumber(this.createAccountNum(account));
     return accountRepository.save(account);
   }
@@ -21,16 +22,13 @@ public class AccountService {
    * @param accounts list of accounts
    * @return list of accounts saved
    */
-  public List<Account> saveAccounts(List<Account> accounts) {
+  @Override
+  public List<Account> saveAll(List<Account> accounts) {
     accounts.forEach(
         account -> {
           account.setAccountNumber(this.createAccountNum(account));
         });
     return accountRepository.saveAll(accounts);
-  }
-
-  public List<Account> getAllAccounts() {
-    return accountRepository.findAll();
   }
 
   private int createAccountNum(Account account) {

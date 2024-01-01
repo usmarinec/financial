@@ -19,19 +19,19 @@ public class AccountController {
 
   @PostMapping("/create")
   public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-    Account savedAccount = accountService.saveAccount(account);
+    Account savedAccount = accountService.save(account);
     return new ResponseEntity<>(savedAccount, HttpStatus.CREATED);
   }
 
   @PostMapping("/create-list")
   public ResponseEntity<List<Account>> createAccounts(@RequestBody List<Account> accounts) {
-    List<Account> savedAccounts = accountService.saveAccounts(accounts);
+    List<Account> savedAccounts = accountService.saveAll(accounts);
     return new ResponseEntity<>(savedAccounts, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
   public ResponseEntity<List<Account>> getAllAccounts() {
-    List<Account> accounts = accountService.getAllAccounts();
+    List<Account> accounts = accountService.getAll();
     return new ResponseEntity<>(accounts, HttpStatus.OK);
   }
 }

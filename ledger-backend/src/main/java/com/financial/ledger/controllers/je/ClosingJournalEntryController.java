@@ -21,20 +21,20 @@ public class ClosingJournalEntryController {
 
   @PostMapping("/create")
   public ResponseEntity<ClosingJournalEntry> createCje(@RequestBody ClosingJournalEntry cje) {
-    ClosingJournalEntry savedCje = cjeService.saveCje(cje);
+    ClosingJournalEntry savedCje = cjeService.save(cje);
     return new ResponseEntity<>(savedCje, HttpStatus.CREATED);
   }
 
   @PostMapping("/create-list")
   public ResponseEntity<List<ClosingJournalEntry>> createCjes(
       @RequestBody List<ClosingJournalEntry> cjes) {
-    List<ClosingJournalEntry> savedCjes = cjeService.saveCjes(cjes);
+    List<ClosingJournalEntry> savedCjes = cjeService.saveAll(cjes);
     return new ResponseEntity<>(savedCjes, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
   public ResponseEntity<List<ClosingJournalEntry>> getAllCjes() {
-    List<ClosingJournalEntry> cjes = cjeService.getAllCjes();
+    List<ClosingJournalEntry> cjes = cjeService.getAll();
     return new ResponseEntity<>(cjes, HttpStatus.OK);
   }
 
@@ -46,7 +46,7 @@ public class ClosingJournalEntryController {
    */
   @GetMapping("/fetch/{id}")
   public ResponseEntity<ClosingJournalEntry> getCjeId(@PathVariable String id) {
-    Optional<ClosingJournalEntry> optionalCje = cjeService.getCjeById(id);
+    Optional<ClosingJournalEntry> optionalCje = cjeService.getById(id);
 
     return optionalCje
         .map(cje -> new ResponseEntity<>(cje, HttpStatus.OK))

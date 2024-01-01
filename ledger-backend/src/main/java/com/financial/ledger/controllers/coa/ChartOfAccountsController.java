@@ -19,13 +19,13 @@ public class ChartOfAccountsController {
 
   @PostMapping("/create")
   public ResponseEntity<ChartOfAccounts> createCoa(@RequestBody ChartOfAccounts coa) {
-    ChartOfAccounts savedCoa = coaService.saveCoa(coa);
+    ChartOfAccounts savedCoa = coaService.save(coa);
     return new ResponseEntity<>(savedCoa, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
   public ResponseEntity<List<ChartOfAccounts>> getAllCoa() {
-    List<ChartOfAccounts> coas = coaService.getAllCoa();
+    List<ChartOfAccounts> coas = coaService.getAll();
     return new ResponseEntity<>(coas, HttpStatus.OK);
   }
 }

@@ -21,13 +21,13 @@ public class EntityController {
 
   @PostMapping("/create")
   public ResponseEntity<Entity> createEntity(@RequestBody Entity entity) {
-    Entity savedEntity = entityService.saveEntity(entity);
+    Entity savedEntity = entityService.save(entity);
     return new ResponseEntity<>(savedEntity, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
   public ResponseEntity<List<Entity>> getAllEntities() {
-    List<Entity> entities = entityService.getAllEntities();
+    List<Entity> entities = entityService.getAll();
     return new ResponseEntity<>(entities, HttpStatus.OK);
   }
 

@@ -21,19 +21,19 @@ public class EntryController {
 
   @PostMapping("/create")
   public ResponseEntity<Entry> createEntry(@RequestBody Entry entry) {
-    Entry savedEntry = entryService.saveEntry(entry);
+    Entry savedEntry = entryService.save(entry);
     return new ResponseEntity<>(savedEntry, HttpStatus.CREATED);
   }
 
   @PostMapping("/create-list")
   public ResponseEntity<List<Entry>> createEntries(@RequestBody List<Entry> entries) {
-    List<Entry> savedEntries = entryService.saveEntries(entries);
+    List<Entry> savedEntries = entryService.saveAll(entries);
     return new ResponseEntity<>(savedEntries, HttpStatus.CREATED);
   }
 
   @GetMapping("/fetch")
   public ResponseEntity<List<Entry>> getAllEntries() {
-    List<Entry> entries = entryService.getAllEntries();
+    List<Entry> entries = entryService.getAll();
     return new ResponseEntity<>(entries, HttpStatus.OK);
   }
 
@@ -45,7 +45,7 @@ public class EntryController {
    */
   @GetMapping("/fetch/{id}")
   public ResponseEntity<Entry> getEntryById(@PathVariable String id) {
-    Optional<Entry> optionalEntry = entryService.getEntryById(id);
+    Optional<Entry> optionalEntry = entryService.getById(id);
 
     return optionalEntry
         .map(entry -> new ResponseEntity<>(entry, HttpStatus.OK))
