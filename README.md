@@ -49,7 +49,8 @@
 * io.spring.dependency-management:1.1.4
 * org.springframework.boot:spring-boot-starter-web
 * org.springframework.boot:spring-boot-starter-data-mongodb
-* com.fasterxml.jackson.datatype:jackson-datatype-jsr310
+* com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.3
+* org.apache.commons:commons-lang3:3.14.0
 * org.projectlombok:lombok
 * org.springframework.boot:spring-boot-starter-test
 
