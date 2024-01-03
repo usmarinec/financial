@@ -1,6 +1,7 @@
 package com.financial.ledger.domain.tb;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.financial.ledger.domain.LedgerDocument;
 import com.financial.ledger.domain.coa.ChartOfAccounts;
 import com.financial.ledger.domain.entity.Entity;
 import com.financial.ledger.domain.types.Balance;
@@ -14,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 @Getter
 @Setter
-public abstract class AbstractTrialBalance {
+public abstract class AbstractTrialBalance extends LedgerDocument {
   private LocalDate date;
   @DBRef Entity entity;
   @DBRef ChartOfAccounts coa;
