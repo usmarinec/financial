@@ -1,5 +1,6 @@
 package com.financial.ledger.controllers;
 
+import com.financial.ledger.domain.LedgerDocument;
 import com.financial.ledger.exception.NotFoundException;
 import com.financial.ledger.response.SuccessFailureResponse;
 import com.financial.ledger.service.LedgerService;
@@ -8,12 +9,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class LedgerController<T, S extends LedgerService<T, ?>> {
+public abstract class LedgerController<T extends LedgerDocument, S extends LedgerService<T, ?>> {
   @Autowired S service;
 
   /**
@@ -25,10 +28,7 @@ public abstract class LedgerController<T, S extends LedgerService<T, ?>> {
   @PostMapping("/create")
   public ResponseEntity<SuccessFailureResponse<T>> create(@RequestBody T type) {
     T savedType = service.save(type);
-    return new ResponseEntity<>(
-        SuccessFailureResponse.success(
-            "Record created", HttpStatus.CREATED.getReasonPhrase(), savedType),
-        HttpStatus.CREATED);
+    return createSuccessFailureResponse(true, "Record created", HttpStatus.CREATED, savedType);
   }
 
   /**
@@ -40,10 +40,8 @@ public abstract class LedgerController<T, S extends LedgerService<T, ?>> {
   @PostMapping("/create-list")
   public ResponseEntity<SuccessFailureResponse<T>> createList(@RequestBody List<T> types) {
     List<T> savedTypes = service.saveAll(types);
-    return new ResponseEntity<>(
-        SuccessFailureResponse.success(
-            "List of records created", HttpStatus.CREATED.getReasonPhrase(), savedTypes),
-        HttpStatus.CREATED);
+    return createSuccessFailureResponse(
+        true, "List of records created", HttpStatus.CREATED, savedTypes);
   }
 
   /**
@@ -54,10 +52,7 @@ public abstract class LedgerController<T, S extends LedgerService<T, ?>> {
   @GetMapping("/fetch")
   public ResponseEntity<SuccessFailureResponse<T>> getAll() {
     List<T> types = service.getAll();
-    return new ResponseEntity<>(
-        SuccessFailureResponse.success(
-            "All records retreived", HttpStatus.OK.getReasonPhrase(), types),
-        HttpStatus.OK);
+    return createSuccessFailureResponse(true, "All records retreived", HttpStatus.OK, types);
   }
 
   /**
@@ -71,16 +66,81 @@ public abstract class LedgerController<T, S extends LedgerService<T, ?>> {
     Optional<T> optionalType = service.getById(id);
 
     return optionalType
-        .map(
-            type ->
-                new ResponseEntity<>(
-                    SuccessFailureResponse.success(
-                        "Record found", HttpStatus.OK.getReasonPhrase(), type),
-                    HttpStatus.OK))
+        .map(type -> createSuccessFailureResponse(true, "Record found", HttpStatus.OK, type))
         .orElseThrow(() -> new NotFoundException("Resource with id: '" + id + "' not found"));
+  }
+
+  /**
+   * Update record by its id.
+   *
+   * @param id string id value
+   * @param type record type to be updated
+   * @return SuccessFailureResponse with record
+   */
+  @PutMapping("/update/{id}")
+  public ResponseEntity<SuccessFailureResponse<T>> update(
+      @PathVariable String id, @RequestBody T type) {
+    if (service.existsById(id)) {
+      type.setId(id);
+      T updatedType = service.save(type);
+      return createSuccessFailureResponse(
+          true, "Record: '" + id + "' updated", HttpStatus.OK, updatedType);
+    } else {
+      throw new NotFoundException("Resource with id: '" + id + "' not found");
+    }
+  }
+
+  /**
+   * Delete record by id.
+   *
+   * @param id string id value
+   * @return SuccessFailureResponse with status message
+   */
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<SuccessFailureResponse<T>> delete(@PathVariable String id) {
+    if (service.existsById(id)) {
+      service.delete(id);
+      return createSuccessFailureResponse(
+          true, "Record deleted with id: '" + id + "'", HttpStatus.OK);
+    } else {
+      throw new NotFoundException("Resource with id: '" + id + "' not found");
+    }
   }
 
   protected S getService() {
     return this.service;
+  }
+
+  private ResponseEntity<SuccessFailureResponse<T>> createSuccessFailureResponse(
+      boolean success, String message, HttpStatus status, T type) {
+    if (success) {
+      return new ResponseEntity<>(
+          SuccessFailureResponse.success(message, status.getReasonPhrase(), type), status);
+    } else {
+      return new ResponseEntity<>(
+          SuccessFailureResponse.failure(message, status.getReasonPhrase()), status);
+    }
+  }
+
+  private ResponseEntity<SuccessFailureResponse<T>> createSuccessFailureResponse(
+      boolean success, String message, HttpStatus status, List<T> types) {
+    if (success) {
+      return new ResponseEntity<>(
+          SuccessFailureResponse.success(message, status.getReasonPhrase(), types), status);
+    } else {
+      return new ResponseEntity<>(
+          SuccessFailureResponse.failure(message, status.getReasonPhrase()), status);
+    }
+  }
+
+  private ResponseEntity<SuccessFailureResponse<T>> createSuccessFailureResponse(
+      boolean success, String message, HttpStatus status) {
+    if (success) {
+      return new ResponseEntity<>(
+          SuccessFailureResponse.success(message, status.getReasonPhrase()), status);
+    } else {
+      return new ResponseEntity<>(
+          SuccessFailureResponse.failure(message, status.getReasonPhrase()), status);
+    }
   }
 }
