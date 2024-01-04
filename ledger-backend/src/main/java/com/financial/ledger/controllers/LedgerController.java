@@ -3,6 +3,7 @@ package com.financial.ledger.controllers;
 import com.financial.ledger.domain.LedgerDocument;
 import com.financial.ledger.exception.NotFoundException;
 import com.financial.ledger.response.SuccessFailureResponse;
+import com.financial.ledger.response.SuccessFailureResponseUtility;
 import com.financial.ledger.service.LedgerService;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,8 @@ public abstract class LedgerController<T extends LedgerDocument, S extends Ledge
   @PostMapping("/create")
   public ResponseEntity<SuccessFailureResponse<T>> create(@RequestBody T type) {
     T savedType = service.save(type);
-    return createSuccessFailureResponse(true, "Record created", HttpStatus.CREATED, savedType);
+    return SuccessFailureResponseUtility.createSuccessFailureResponse(
+        true, "Record created", HttpStatus.CREATED, savedType);
   }
 
   /**
@@ -40,7 +42,7 @@ public abstract class LedgerController<T extends LedgerDocument, S extends Ledge
   @PostMapping("/create-list")
   public ResponseEntity<SuccessFailureResponse<T>> createList(@RequestBody List<T> types) {
     List<T> savedTypes = service.saveAll(types);
-    return createSuccessFailureResponse(
+    return SuccessFailureResponseUtility.createSuccessFailureResponse(
         true, "List of records created", HttpStatus.CREATED, savedTypes);
   }
 
@@ -52,7 +54,8 @@ public abstract class LedgerController<T extends LedgerDocument, S extends Ledge
   @GetMapping("/fetch")
   public ResponseEntity<SuccessFailureResponse<T>> getAll() {
     List<T> types = service.getAll();
-    return createSuccessFailureResponse(true, "All records retreived", HttpStatus.OK, types);
+    return SuccessFailureResponseUtility.createSuccessFailureResponse(
+        true, "All records retreived", HttpStatus.OK, types);
   }
 
   /**
@@ -66,7 +69,10 @@ public abstract class LedgerController<T extends LedgerDocument, S extends Ledge
     Optional<T> optionalType = service.getById(id);
 
     return optionalType
-        .map(type -> createSuccessFailureResponse(true, "Record found", HttpStatus.OK, type))
+        .map(
+            type ->
+                SuccessFailureResponseUtility.createSuccessFailureResponse(
+                    true, "Record found", HttpStatus.OK, type))
         .orElseThrow(() -> new NotFoundException("Resource with id: '" + id + "' not found"));
   }
 
@@ -83,7 +89,7 @@ public abstract class LedgerController<T extends LedgerDocument, S extends Ledge
     if (service.existsById(id)) {
       type.setId(id);
       T updatedType = service.save(type);
-      return createSuccessFailureResponse(
+      return SuccessFailureResponseUtility.createSuccessFailureResponse(
           true, "Record: '" + id + "' updated", HttpStatus.OK, updatedType);
     } else {
       throw new NotFoundException("Resource with id: '" + id + "' not found");
@@ -100,7 +106,7 @@ public abstract class LedgerController<T extends LedgerDocument, S extends Ledge
   public ResponseEntity<SuccessFailureResponse<T>> delete(@PathVariable String id) {
     if (service.existsById(id)) {
       service.delete(id);
-      return createSuccessFailureResponse(
+      return SuccessFailureResponseUtility.createSuccessFailureResponse(
           true, "Record deleted with id: '" + id + "'", HttpStatus.OK);
     } else {
       throw new NotFoundException("Resource with id: '" + id + "' not found");
@@ -109,38 +115,5 @@ public abstract class LedgerController<T extends LedgerDocument, S extends Ledge
 
   protected S getService() {
     return this.service;
-  }
-
-  private ResponseEntity<SuccessFailureResponse<T>> createSuccessFailureResponse(
-      boolean success, String message, HttpStatus status, T type) {
-    if (success) {
-      return new ResponseEntity<>(
-          SuccessFailureResponse.success(message, status.getReasonPhrase(), type), status);
-    } else {
-      return new ResponseEntity<>(
-          SuccessFailureResponse.failure(message, status.getReasonPhrase()), status);
-    }
-  }
-
-  private ResponseEntity<SuccessFailureResponse<T>> createSuccessFailureResponse(
-      boolean success, String message, HttpStatus status, List<T> types) {
-    if (success) {
-      return new ResponseEntity<>(
-          SuccessFailureResponse.success(message, status.getReasonPhrase(), types), status);
-    } else {
-      return new ResponseEntity<>(
-          SuccessFailureResponse.failure(message, status.getReasonPhrase()), status);
-    }
-  }
-
-  private ResponseEntity<SuccessFailureResponse<T>> createSuccessFailureResponse(
-      boolean success, String message, HttpStatus status) {
-    if (success) {
-      return new ResponseEntity<>(
-          SuccessFailureResponse.success(message, status.getReasonPhrase()), status);
-    } else {
-      return new ResponseEntity<>(
-          SuccessFailureResponse.failure(message, status.getReasonPhrase()), status);
-    }
   }
 }
