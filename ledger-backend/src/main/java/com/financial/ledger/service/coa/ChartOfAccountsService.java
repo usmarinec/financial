@@ -30,11 +30,6 @@ public class ChartOfAccountsService
     return repository.save(coa);
   }
 
-  @Override
-  public List<ChartOfAccounts> getAll() {
-    return repository.findAll();
-  }
-
   private List<Account> createAccounts(ChartOfAccounts coa) {
     List<Account> accounts = coa.getAccounts();
     for (Account account : accounts) {
