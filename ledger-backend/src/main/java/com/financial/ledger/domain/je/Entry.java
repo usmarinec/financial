@@ -7,6 +7,8 @@ import com.financial.ledger.domain.coa.ChartOfAccounts;
 import com.financial.ledger.domain.entity.Entity;
 import com.financial.ledger.domain.types.Balance;
 import com.financial.ledger.domain.types.BalanceSerializer;
+import com.financial.ledger.domain.types.EntryType;
+
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +22,7 @@ public class Entry extends LedgerDocument {
   @DBRef private Entity entity;
   @DBRef private ChartOfAccounts coa;
   @DBRef private Account account;
+  private EntryType entryType;
   private LocalDate date;
   private String description;
 
