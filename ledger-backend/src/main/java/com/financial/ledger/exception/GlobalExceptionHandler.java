@@ -39,4 +39,19 @@ public class GlobalExceptionHandler {
             "Resource not found: " + ex.getMessage(), HttpStatus.NOT_FOUND.getReasonPhrase()),
         HttpStatus.NOT_FOUND);
   }
+
+  /**
+   * Handles NullPropertyExceptions thrwon by the controller.
+   *
+   * @param ex exception thrwon by the controller
+   * @return ResponseEntity SuccessFailureResponse
+   */
+  @ExceptionHandler(NullPropertyException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<SuccessFailureResponse<?>> handleNullPropertyException(
+      NullPropertyException ex) {
+    return new ResponseEntity<>(
+        SuccessFailureResponse.failure(ex.getMessage(), HttpStatus.BAD_REQUEST.getReasonPhrase()),
+        HttpStatus.BAD_REQUEST);
+  }
 }
