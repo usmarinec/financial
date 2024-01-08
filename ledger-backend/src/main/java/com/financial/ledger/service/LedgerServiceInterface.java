@@ -11,4 +11,8 @@ public interface LedgerServiceInterface<T> {
   List<T> getAll();
 
   Optional<T> getById(String id);
+
+  void delete(String id);
+
+  boolean existsById(String id);
 }

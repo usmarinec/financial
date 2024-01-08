@@ -1,9 +1,9 @@
 package com.financial.ledger.repositories.entity;
 
 import com.financial.ledger.domain.entity.Entity;
+import com.financial.ledger.repositories.LedgerRepository;
 import java.util.Optional;
-import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface EntityRepository extends MongoRepository<Entity, String> {
+public interface EntityRepository extends LedgerRepository<Entity> {
   Optional<Entity> findByName(String name);
 }
