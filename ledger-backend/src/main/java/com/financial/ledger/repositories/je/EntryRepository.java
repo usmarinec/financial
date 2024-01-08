@@ -1,6 +1,6 @@
 package com.financial.ledger.repositories.je;
 
 import com.financial.ledger.domain.je.Entry;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.financial.ledger.repositories.LedgerRepository;
 
-public interface EntryRepository extends MongoRepository<Entry, String> {}
+public interface EntryRepository extends LedgerRepository<Entry> {}

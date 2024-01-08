@@ -2,11 +2,12 @@ package com.financial.ledger.service.coa;
 
 import com.financial.ledger.domain.account.Account;
 import com.financial.ledger.domain.coa.ChartOfAccounts;
-import com.financial.ledger.domain.entity.Entity;
+import com.financial.ledger.exception.NotFoundException;
+import com.financial.ledger.exception.NullPropertyException;
 import com.financial.ledger.repositories.coa.ChartOfAccountsRepository;
 import com.financial.ledger.service.LedgerService;
 import com.financial.ledger.service.account.AccountService;
-import com.financial.ledger.service.entity.EntityService;
+import com.financial.ledger.validators.entity.EntityValidator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,24 +16,34 @@ import org.springframework.stereotype.Service;
 public class ChartOfAccountsService
     extends LedgerService<ChartOfAccounts, ChartOfAccountsRepository> {
   @Autowired private AccountService accountService;
-  @Autowired private EntityService entityService;
+  @Autowired private EntityValidator entityValidator;
 
   /**
    * Creates a new chart of accounts.
    *
    * @param coa chart of accounts
    * @return saved chart of accounts
+   * @throws NotFoundException if entity not found
    */
   @Override
-  public ChartOfAccounts save(ChartOfAccounts coa) {
+  public ChartOfAccounts save(ChartOfAccounts coa) throws NotFoundException, NullPropertyException {
+    entityValidator.validateNotNull(coa.getEntity());
+    entityValidator.validateId(coa.getEntity());
     coa.setAccounts(this.createAccounts(coa));
-    coa.setEntity(this.createEntity(coa));
     return repository.save(coa);
   }
 
+  /**
+   * Saves a list of chart of accounts.
+   *
+   * @param coas List of ChartOfAccounts
+   * @throws UnsupportedOperationException because this method is disabled
+   */
   @Override
-  public List<ChartOfAccounts> getAll() {
-    return repository.findAll();
+  public List<ChartOfAccounts> saveAll(List<ChartOfAccounts> coas)
+      throws UnsupportedOperationException {
+    throw new UnsupportedOperationException(
+        "SaveAll method is not supported in this implementation");
   }
 
   private List<Account> createAccounts(ChartOfAccounts coa) {
@@ -44,13 +55,5 @@ public class ChartOfAccountsService
       }
     }
     return accounts;
-  }
-
-  private Entity createEntity(ChartOfAccounts coa) {
-    Entity entity = coa.getEntity();
-    if (entity.getId() == null) {
-      entity = this.entityService.save(entity);
-    }
-    return entity;
   }
 }

@@ -1,6 +1,6 @@
 package com.financial.ledger.repositories.coa;
 
 import com.financial.ledger.domain.coa.ChartOfAccounts;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.financial.ledger.repositories.LedgerRepository;
 
-public interface ChartOfAccountsRepository extends MongoRepository<ChartOfAccounts, String> {}
+public interface ChartOfAccountsRepository extends LedgerRepository<ChartOfAccounts> {}
