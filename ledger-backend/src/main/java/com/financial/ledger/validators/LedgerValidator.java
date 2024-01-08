@@ -3,10 +3,10 @@ package com.financial.ledger.validators;
 import com.financial.ledger.domain.LedgerDocument;
 import com.financial.ledger.exception.NotFoundException;
 import com.financial.ledger.exception.NullPropertyException;
-import com.financial.ledger.service.LedgerService;
+import com.financial.ledger.validators.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class LedgerValidator<T extends LedgerDocument, S extends LedgerService<T, ?>> {
+public class LedgerValidator<T extends LedgerDocument, S extends ValidatorService<T, ?>> {
   @Autowired protected S service;
   protected String recordType;
 
@@ -18,6 +18,19 @@ public class LedgerValidator<T extends LedgerDocument, S extends LedgerService<T
    */
   public void validateNotNull(T type) throws NullPropertyException {
     if (type == null) {
+      String message = this.recordType + " is null";
+      throw new NullPropertyException(message);
+    }
+  }
+
+  /**
+   * Validates field is not null (string).
+   *
+   * @param id String value to validate
+   * @throws NulllPropertyException if type is null
+   */
+  public void validateNotNull(String id) throws NullPropertyException {
+    if (id == null) {
       String message = this.recordType + " is null";
       throw new NullPropertyException(message);
     }

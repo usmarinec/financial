@@ -1,11 +1,15 @@
 package com.financial.ledger.validators.je;
 
 import com.financial.ledger.domain.je.JournalEntry;
-import com.financial.ledger.service.je.JournalEntryService;
-import com.financial.ledger.validators.LedgerValidator;
+import com.financial.ledger.repositories.je.JournalEntryRepository;
+import com.financial.ledger.validators.service.je.JournalEntryValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class JournalEntryValidator extends LedgerValidator<JournalEntry, JournalEntryService> {
+@Service
+public class JournalEntryValidator
+    extends AbstractJournalEntryValidator<
+        JournalEntry, JournalEntryRepository, JournalEntryValidatorService> {
   @Autowired
   public JournalEntryValidator() {
     this.recordType = "JournalEntry";
