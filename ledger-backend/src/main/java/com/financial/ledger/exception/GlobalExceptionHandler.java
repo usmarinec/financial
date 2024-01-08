@@ -54,4 +54,19 @@ public class GlobalExceptionHandler {
         SuccessFailureResponse.failure(ex.getMessage(), HttpStatus.BAD_REQUEST.getReasonPhrase()),
         HttpStatus.BAD_REQUEST);
   }
+
+  /**
+   * Handles ValueNotAllowedExceptions thrown by the controller.
+   *
+   * @param ex exception thrwon by the controller
+   * @return ResponseEntity SuccessFailureResponse
+   */
+  @ExceptionHandler(ValueNotAllowedException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<SuccessFailureResponse<?>> handleValueNotAllowedException(
+      ValueNotAllowedException ex) {
+    return new ResponseEntity<>(
+        SuccessFailureResponse.failure(ex.getMessage(), HttpStatus.BAD_REQUEST.getReasonPhrase()),
+        HttpStatus.BAD_REQUEST);
+  }
 }
